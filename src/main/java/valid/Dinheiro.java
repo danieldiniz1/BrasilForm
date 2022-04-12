@@ -3,6 +3,7 @@ package valid;
 import org.javamoney.moneta.FastMoney;
 import org.javamoney.moneta.Money;
 import org.javamoney.moneta.convert.ExchangeRateType;
+import org.javamoney.moneta.function.MonetaryOperators;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
@@ -22,12 +23,14 @@ public class Dinheiro {
         System.out.println(valorDaParcela);
 
         MonetaryAmount valorTotal = valorDaParcela.multiply(12);
+        MonetaryAmount discount = valorTotal.with(MonetaryOperators.percent(10));
         System.out.println(valorTotal.getNumber());
+        System.out.println(discount);
 
         MonetaryAmount valorProdutoDolar = FastMoney.of(90, dolar);
         MonetaryAmount valorImpostoReal = FastMoney.of(30, real);
 
-        MonetaryAmount impostoConvertido = conversorDeValor(BigDecimal.valueOf(30), real.getCurrencyCode(), dolar.getCurrencyCode());
+        MonetaryAmount impostoConvertido = conversorDeValor(BigDecimal.valueOf(valorImpostoReal.getNumber().doubleValue()), real.getCurrencyCode(), dolar.getCurrencyCode());
         System.out.println(valorProdutoDolar.add(impostoConvertido));
     }
 
